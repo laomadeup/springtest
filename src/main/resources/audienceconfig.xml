@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.spring.xml"></context:component-scan>
+    <bean id="audience" class="com.spring.xml.concert.Audience"></bean>
+    <bean id="singer" class="com.spring.xml.concert.Singer"></bean>
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+    <aop:config>
+        <aop:aspect ref="audience">
+            <aop:pointcut id="performance" expression="execution(public * com.spring.xml.concert.Performance.perform(..))"></aop:pointcut>
+            <aop:before method="silenceCellPhone" pointcut-ref="performance"></aop:before>
+            <aop:before method="takeSeats" pointcut-ref="performance"></aop:before>
+            <aop:after-returning method="applause" pointcut-ref="performance"></aop:after-returning>
+            <aop:after-throwing method="demandRefund" pointcut-ref="performance"></aop:after-throwing>
+        </aop:aspect>
+    </aop:config>
+
+
+</beans>
